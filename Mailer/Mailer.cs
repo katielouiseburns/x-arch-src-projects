@@ -356,6 +356,7 @@ class Generator
     }
 }
 
+// TODO: Direct Cloudflare API v4 instead of worker script
 class AccessKeys
 {
     private static readonly string Hostname = "access-keys.kalobu.workers.dev";
@@ -419,6 +420,7 @@ class AccessKeys
 //         }
 }
 
+// TODO: Replace with Cloudflare API v4
 class Discord
 {
     private static readonly string Channel = "https://discord.com/api/webhooks/866327341755924511/QRmvvuHbLMR8B2mAYgZS8BEf_ph5SHv8Ah06slrLQU65kI7_jppXZklxDRauTKYWD4lY";
