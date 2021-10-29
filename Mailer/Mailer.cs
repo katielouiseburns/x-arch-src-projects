@@ -381,43 +381,43 @@ class AccessKeys
         }
     }
 
-//         public static bool Lookup(string id)
-//         {
-//             try
-//             {
-//                 string url = string.Format("https://{0}/access-keys/lookup?password={1}&id={2}", Hostname, Password, id);
-//                 HttpWebRequest request = WebRequest.CreateHttp(url);
-//                 HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+    // public static bool Lookup(string id)
+    // {
+    //     try
+    //     {
+    //         string url = string.Format("https://{0}/access-keys/lookup?password={1}&id={2}", Hostname, Password, id);
+    //         HttpWebRequest request = WebRequest.CreateHttp(url);
+    //         HttpWebResponse response = request.GetResponse() as HttpWebResponse;
 
-//                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-//                 {
-//                     return string.IsNullOrWhiteSpace(reader.ReadToEnd()).Equals(false);
-//                 }
-//             }
-//             catch (Exception)
-//             {
-//                 return false;
-//             }
-//         }
+    //         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+    //         {
+    //             return string.IsNullOrWhiteSpace(reader.ReadToEnd()).Equals(false);
+    //         }
+    //     }
+    //     catch (Exception)
+    //     {
+    //         return false;
+    //     }
+    // }
 
-//         public static bool Revoke(string id)
-//         {
-//             try
-//             {
-//                 string url = string.Format("https://{0}/access-keys/revoke?password={1}&id={2}", Hostname, Password, id);
-//                 HttpWebRequest request = WebRequest.CreateHttp(url);
-//                 HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+    // public static bool Revoke(string id)
+    // {
+    //     try
+    //     {
+    //         string url = string.Format("https://{0}/access-keys/revoke?password={1}&id={2}", Hostname, Password, id);
+    //         HttpWebRequest request = WebRequest.CreateHttp(url);
+    //         HttpWebResponse response = request.GetResponse() as HttpWebResponse;
 
-//                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-//                 {
-//                     return string.IsNullOrWhiteSpace(reader.ReadToEnd()).Equals(false);
-//                 }
-//             }
-//             catch (Exception)
-//             {
-//                 return false;
-//             }
-//         }
+    //         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+    //         {
+    //             return string.IsNullOrWhiteSpace(reader.ReadToEnd()).Equals(false);
+    //         }
+    //     }
+    //     catch (Exception)
+    //     {
+    //         return false;
+    //     }
+    // }
 }
 
 // TODO: Replace with Cloudflare API v4
